@@ -101,3 +101,19 @@ nav {
     border: 0px solid rgb(255, 255, 255);
     margin-right: 1vw;
 }
+
+.slove{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#image{
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
