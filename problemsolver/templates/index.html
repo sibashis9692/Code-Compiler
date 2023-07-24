@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style/index.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo" onclick="window.location.href='/'">Solver</div>
+            {% if request.session.logdin %}
+                <div class="prev">
+                    <a href="{{previous}}"><img src="{% static 'images/prev.png' %}" alt=""></a>
+                </div>
+                <div class="next">
+                    <a href="{{next}}"><img src="{% static 'images/next.png' %}" alt=""></a>
+                </div>
+                <div class="login"> 
+                    <a href="/logout/"><button id="login">Logout</button></a>
+                </div>
+            {% else %}
+                <div class="login"> 
+                    <a href="/login/"><button id="login">Login</button></a>
+                </div>
+            {% endif %}
+        </nav>
+
+        <div class="content">
+            {% if request.session.logdin %}
+                <div class="left">
+                    {% for question in questions %}
+                        <div class="leftt">
+                            <div class="title">{{ question.title }}</div>
+                            <div class="question">{{ question.question }}</div>
+                            {% for testcase in testcases %}
+                                <div class="testcases">
+                                    <div class="example">
+                                        <p style="font-size: 15px; font-weight: bold; font-family: system-ui;">Example {{forloop.counter}}:- </p>
+                                    </div>
+                                    <p style="display: inline-block;">Input: </p> <span>{{testcase.input}}</span>
+                                    <br>
+                                    <p style="display: inline-block;">Output: </p>: <span>{{testcase.output}}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="right">
+                    <div class="rightt">
+                        <div class="options">
+                            <div class="language">
+                                <select name="select" id="selection" required>
+                                    <optgroup label="Languages">
+                                        <option data-format="language" disabled>Languages</option>
+                                        {% if language != ""%}
+                                            <option data-format="language" selected>{{language}}</option>
+                                        {% endif %}
+                                        <option data-format="language">C</option>
+                                        <option data-format="language">C++</option>
+                                        <option data-format="language">Java</option>
+                                        <option data-format="language">Python</option>
+                                        <option data-format="language">JavaScript</option>
+                                        <option data-format="language">C#</option>
+                                        <option data-format="language">Go</option>
+                                        <option data-format="language">Kotlin</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="code">
+                            <div class="line-numbers">
+                                <pre id="lineNumbers"></pre>
+                            </div>
+                            <textarea id="myTextarea" style="width: 98%; height: 45vh;" required>{{code}}</textarea>
+                        </div>
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert" style="background-color: {{b_color}};">
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                                <p>{{m_title}}</p>
+                                <div class="errormessage" style="height: 100%; margin-top: 5px;">
+                                    <pre>{{m_output}}<pre>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="userinput">
+                            <form method="post" action="/">
+                                {% csrf_token %}
+                                <label for="title" class="title" ></label></br>
+                                <input type ="text" id="inputtit" placeholder="Input for test case: " name="input" style="height: 7vh; width: 99%;" required></br>
+
+                                <input type="hidden" id="language" name="language">
+                                <input type="hidden" id="code" name="code">
+                            </form>
+                        </div>
+                        <div class="run">
+                            <button id="runbutton" onclick="submitForm()">Run</button>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="slove">
+                    <img id="image" src="{% static '/images/wallpaper.jpg/'%}" alt="">
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+<script src="{% static 'javascript/index.js' %}"></script>
+
+</html>
